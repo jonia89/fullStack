@@ -1,37 +1,8 @@
 import { useState } from "react";
-
-const NextAnecdoteButton = (props) => {
-  const handleClick = () => {
-    props.setSelected(Math.floor(Math.random() * props.anecdotes.length));
-  };
-
-  return <button onClick={handleClick}>next anecdote</button>;
-};
-
-const Votes = (props) => {
-  return <p>has {props.votes[props.selected]} votes</p>;
-};
-
-const VoteButton = (props) => {
-  const handleClick = () => {
-    const newVotes = [...props.votes];
-    newVotes[props.selected] += 1;
-    props.setVotes(newVotes);
-  };
-  return <button onClick={handleClick}>vote</button>;
-};
-
-const MostVotes = (props) => {
-  const hasMOstVotes = (arr) => {
-    return arr.indexOf(Math.max(...arr));
-  };
-  return (
-  <div>
-  <p>{props.anecdotes[hasMOstVotes(props.votes)]}</p>
-  <Votes selected={hasMOstVotes(props.votes)} votes={props.votes} />
-  </div>);
-  
-};
+import { NextAnecdoteButton } from "./Components/NextAnecdoteButton.jsx";
+import { VoteButton } from "./Components/VoteButton.jsx";
+import { Votes } from "./Components/Votes.jsx";
+import { MostVotes } from "./Components/MostVotes.jsx";
 
 const App = () => {
   const anecdotes = [

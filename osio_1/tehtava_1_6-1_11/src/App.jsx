@@ -1,36 +1,8 @@
 import { useState } from "react";
+import { Statistics } from "./Compoents/Statistics.jsx";
+import { Button } from "./Compoents/Button.jsx";
 
-const Statistics = (props) => {
-  return (
-    <table>
-      <tbody>
-        <StatisticLine text="good" value={props.feedback.good} />
-        <StatisticLine text="neutral" value={props.feedback.neutral} />
-        <StatisticLine text="bad" value={props.feedback.bad} />
-        <StatisticLine text="all" value={props.total} />
-        <StatisticLine text="average" value={props.average} />
-        <StatisticLine text="positive" value={props.positive} ending="%" />
-      </tbody>
-    </table>
-  );
-};
-
-const StatisticLine = (props) => {
-  return (
-    <tr>
-      <td>{props.text}</td>
-      <td>
-        {props.value} {props.ending || ""}
-      </td>
-    </tr>
-  );
-};
-
-const Button = (props) => {
-  return <button onClick={props.onClickHandler}>{props.text}</button>;
-};
-
-function App() {
+const App = () => {
   const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
   const total = feedback.good + feedback.neutral + feedback.bad;
   const average = (feedback.good - feedback.bad) / total || 0;
@@ -76,6 +48,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;
