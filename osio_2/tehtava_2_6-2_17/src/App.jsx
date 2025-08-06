@@ -3,12 +3,15 @@ import { Filter } from "./Components/Filter";
 import { PersonForm } from "./Components/PersonForm";
 import { Persons } from "./Components/Persons";
 import personService from "./services/persons";
+import "./index.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [infoMessage, setInfoMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personService.getPersons().then((response) => {
@@ -58,12 +61,26 @@ const App = () => {
       : personService.createPerson(personObject).then((response) => {
           setPersons(persons.concat(response.data));
         });
+    setInfoMessage(`Added ${newName}`);
+    setTimeout(() => {
+      setInfoMessage(null);
+    }, 3000);
     setNewName("");
     setNewNumber("");
   };
 
   const deleteContact = (id, name) => {
-    window.confirm(`delete ${name} ?`) ? personService.deletePerson(id) : "";
+    window.confirm(`delete ${name} ?`)
+      ? personService.deletePerson(id).catch((error) => {
+          console.error(error);
+          setErrorMessage(
+            `Information of ${name} has already been removed from server`
+          );
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 3000);
+        })
+      : "";
   };
 
   const filteredPersons = persons.filter((person) =>
@@ -73,6 +90,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {infoMessage ? <h2 className="info">{infoMessage}</h2> : ""}
+      {errorMessage ? <h2 className="error">{errorMessage}</h2> : ""}
       <Filter filter={filter} handleFilter={handleFilter} />
       <h3>Add a new</h3>
       <PersonForm
