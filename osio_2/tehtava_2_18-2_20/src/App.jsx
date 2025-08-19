@@ -21,11 +21,14 @@ useEffect(() => {
     country.name.common.toLowerCase().includes(filter.toLowerCase())
   );
 
+const selectCountry = (country) => {
+  setFilter(country.name.common);
+};
 
   return (
     <div>
       <Filter filter={filter} handleFilter={handleFilter} />
-      <List filteredCountries={filteredCountries} />
+      <List filteredCountries={filteredCountries} filter={filter} selectCountry={selectCountry}/>
     </div>
   );
 }
