@@ -17,7 +17,7 @@ const App = () => {
     personService.getPersons().then((response) => {
       setPersons(response.data);
     });
-  });
+  }, []);
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -81,6 +81,7 @@ const App = () => {
           }, 3000);
         })
       : "";
+      setPersons(persons.filter((person) => person.id !== id));
   };
 
   const filteredPersons = persons.filter((person) =>
