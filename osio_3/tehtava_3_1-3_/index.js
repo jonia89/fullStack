@@ -1,11 +1,14 @@
 // const http = require("http");
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const app = express();
 morgan.token('body', (req) =>  JSON.stringify(req.body))
 
+app.use(cors());
 app.use(express.json());
+
 app.use(morgan("tiny", {
   skip: (req) => req.method === 'POST'
 }));
