@@ -4,18 +4,24 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const app = express();
-morgan.token('body', (req) =>  JSON.stringify(req.body))
+morgan.token("body", (req) => JSON.stringify(req.body));
 
 app.use(cors());
 app.use(express.json());
 
-app.use(morgan("tiny", {
-  skip: (req) => req.method === 'POST'
-}));
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body', {
-  skip: (req) => req.method !== 'POST'
-}));
-
+app.use(
+  morgan("tiny", {
+    skip: (req) => req.method === "POST",
+  })
+);
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :body",
+    {
+      skip: (req) => req.method !== "POST",
+    }
+  )
+);
 
 let persons = [
   {
@@ -105,6 +111,7 @@ app.get("/info", (request, response) => {
   );
 });
 
-const PORT = 3001;
-app.listen(PORT);
-console.log(`Server running on port ${PORT}`);
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
