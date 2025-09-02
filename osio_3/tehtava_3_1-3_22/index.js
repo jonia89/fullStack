@@ -52,7 +52,7 @@ let persons = [
 // })
 
 const generateId = () => {
-  let id = Math.floor(Math.random() * 1000000);
+  let id = Math.floor(Math.random() * 1000000).toString();
   if (persons.find((person) => person.id === id)) {
     return generateId();
   }
