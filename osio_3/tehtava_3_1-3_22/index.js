@@ -8,7 +8,9 @@ const Person = require("./person");
 const app = express();
 morgan.token("body", (req) => JSON.stringify(req.body));
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://fullstack-website-e7px.onrender.com'
+}));
 app.use(express.json());
 
 app.use(
