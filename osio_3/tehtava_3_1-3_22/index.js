@@ -57,14 +57,14 @@ app.use(
 //   response.end(JSON.stringify(persons))
 // })
 
-const generateId = () => {
+// const generateId = () => {
   // let id = Math.floor(Math.random() * 1000000).toString();
   // if (persons.find((person) => person.id === id)) {
   //   return generateId();
   // }
   // return id;
-  return Math.floor(Math.random() * 1000000).toString();
-};
+//   return Math.floor(Math.random() * 1000000).toString();
+// };
 
 app.get("/api/persons", (request, response) => {
   // response.json(persons);
@@ -113,7 +113,7 @@ app.post("/api/persons", (request, response) => {
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  Person.findByIdAndRemove(request.params.id).then(() => {
+  Person.findByIdAndDelete(request.params.id).then(() => {
     response.status(204).end();
   });
   // const id = request.params.id;
