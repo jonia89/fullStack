@@ -1,7 +1,9 @@
 // const http = require("http");
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const Person = require("./models/person");
 
 const app = express();
 morgan.token("body", (req) => JSON.stringify(req.body));
@@ -23,28 +25,28 @@ app.use(
   )
 );
 
-let persons = [
-  {
-    name: "Arto Hellas",
-    number: "040-123456",
-    id: "1",
-  },
-  {
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-    id: "2",
-  },
-  {
-    name: "Dan Abramov",
-    number: "12-43-234345",
-    id: "3",
-  },
-  {
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-    id: "4",
-  },
-];
+// let persons = [
+//   {
+//     name: "Arto Hellas",
+//     number: "040-123456",
+//     id: "1",
+//   },
+//   {
+//     name: "Ada Lovelace",
+//     number: "39-44-5323523",
+//     id: "2",
+//   },
+//   {
+//     name: "Dan Abramov",
+//     number: "12-43-234345",
+//     id: "3",
+//   },
+//   {
+//     name: "Mary Poppendieck",
+//     number: "39-23-6423122",
+//     id: "4",
+//   },
+// ];
 
 // const app = http.createServer((request, response) => {
 //   response.writeHead(200, { 'Content-Type': 'application/json' })
@@ -52,15 +54,19 @@ let persons = [
 // })
 
 const generateId = () => {
-  let id = Math.floor(Math.random() * 1000000).toString();
-  if (persons.find((person) => person.id === id)) {
-    return generateId();
-  }
-  return id;
+  // let id = Math.floor(Math.random() * 1000000).toString();
+  // if (persons.find((person) => person.id === id)) {
+  //   return generateId();
+  // }
+  // return id;
+  return Math.floor(Math.random() * 1000000).toString();
 };
 
 app.get("/api/persons", (request, response) => {
-  response.json(persons);
+  // response.json(persons);
+  Person.find({}).then((persons) => {
+    response.json(persons);
+  });
 });
 
 app.get("/api/persons/:id", (request, response) => {
@@ -111,7 +117,7 @@ app.get("/info", (request, response) => {
   );
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
