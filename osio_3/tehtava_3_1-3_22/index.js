@@ -133,13 +133,15 @@ app.delete("/api/persons/:id", (request, response, next) => {
   // response.status(204).end();
 });
 
-app.get("/info", (request, response,next) => {
-  Person.countDocuments({}).then((count) => {
-    const date = new Date();
-    response.send(
-      `<p>Phonebook has info for ${count} people</p><p>${date}</p>`
-    );
-  }).catch((error) => next(error));
+app.get("/info", (request, response, next) => {
+  Person.countDocuments({})
+    .then((count) => {
+      const date = new Date();
+      response.send(
+        `<p>Phonebook has info for ${count} people</p><p>${date}</p>`
+      );
+    })
+    .catch((error) => next(error));
   // const date = new Date();
   // response.send(
   //   `<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`
@@ -147,21 +149,21 @@ app.get("/info", (request, response,next) => {
 });
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  console.error(error.message);
 
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
   }
 
-  next(error)
-}
+  next(error);
+};
 
-app.use(unknownEndpoint)
-app.use(errorHandler)
+app.use(unknownEndpoint);
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
