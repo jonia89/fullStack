@@ -53,7 +53,7 @@ const App = () => {
             .then((response) => {
               setPersons(
                 persons.map((person) =>
-                  person.id !== existingPerson.id ? response.data : person
+                  person.id === existingPerson.id ? response.data : person
                 )
               );
             })
