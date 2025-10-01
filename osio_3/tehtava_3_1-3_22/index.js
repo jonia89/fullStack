@@ -4,7 +4,6 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./person");
-const person = require("./person");
 
 const app = express();
 morgan.token("body", (req) => JSON.stringify(req.body));
