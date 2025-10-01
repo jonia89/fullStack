@@ -22,6 +22,7 @@ app.use(
     skip: (req) => req.method === "POST",
   })
 );
+
 app.use(
   morgan(
     ":method :url :status :res[content-length] - :response-time ms :body",
