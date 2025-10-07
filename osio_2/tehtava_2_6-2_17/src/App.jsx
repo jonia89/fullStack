@@ -16,7 +16,9 @@ const App = () => {
   useEffect(() => {
     personService.getPersons().then((response) => {
       setPersons(response.data);
-    });
+    }).catch(error => {
+      console.error(error.response.data);
+    })
   }, []);
 
   const handleNameChange = (event) => {
