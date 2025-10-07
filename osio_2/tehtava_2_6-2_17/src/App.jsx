@@ -14,11 +14,14 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    personService.getPersons().then((response) => {
-      setPersons(response.data);
-    }).catch(error => {
-      console.error(error.response.data);
-    })
+    personService
+      .getPersons()
+      .then((response) => {
+        setPersons(response.data);
+      })
+      .catch((error) => {
+        console.error(error.response.data);
+      });
   }, []);
 
   const handleNameChange = (event) => {
@@ -62,13 +65,19 @@ const App = () => {
         : ""
       : personService.createPerson(personObject).then((response) => {
           setPersons(persons.concat(response.data));
+          setInfoMessage(`Added ${newName}`);
+          setTimeout(() => {
+            setInfoMessage(null);
+          }, 3000);
+          setNewName("");
+          setNewNumber("");
+        }).catch((error) => {
+          console.error(error.response.data);
+          setErrorMessage(error.response.data.error);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 3000);
         });
-    setInfoMessage(`Added ${newName}`);
-    setTimeout(() => {
-      setInfoMessage(null);
-    }, 3000);
-    setNewName("");
-    setNewNumber("");
   };
 
   const deleteContact = (id, name) => {
@@ -83,7 +92,7 @@ const App = () => {
           }, 3000);
         })
       : "";
-      setPersons(persons.filter((person) => person.id !== id));
+    setPersons(persons.filter((person) => person.id !== id));
   };
 
   const filteredPersons = persons.filter((person) =>
