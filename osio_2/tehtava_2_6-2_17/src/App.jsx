@@ -63,7 +63,7 @@ const App = () => {
               );
             })
             .catch((error) => {
-              // console.error(error.response.data);
+              console.error(error.response.data);
               setErrorMessage(error.response.data.error);
               setTimeout(() => {
                 setErrorMessage(null);
@@ -82,7 +82,7 @@ const App = () => {
             setNewNumber("");
           })
           .catch((error) => {
-            // console.error(error.response.data);
+            console.error(error.response.data);
             setErrorMessage(error.response.data.error);
             setTimeout(() => {
               setErrorMessage(null);
