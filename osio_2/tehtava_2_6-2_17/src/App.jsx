@@ -43,7 +43,7 @@ const App = () => {
     // ? alert(`${newName} is already added to phonebook`)
     existingPerson
       ? window.confirm(
-          `${newName} is already added to phonebook, replace the old number with new one ?`
+          `${newName} is already added to phonebook, replace the old number with new one?`
         )
         ? personService
             .updatePerson(existingPerson.id, {
