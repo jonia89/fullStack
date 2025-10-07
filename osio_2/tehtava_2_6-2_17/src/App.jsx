@@ -62,22 +62,31 @@ const App = () => {
                 )
               );
             })
+            .catch((error) => {
+              setErrorMessage(error.response.data.error);
+              setTimeout(() => {
+                setErrorMessage(null);
+              }, 3000);
+            })
         : ""
-      : personService.createPerson(personObject).then((response) => {
-          setPersons(persons.concat(response.data));
-          setInfoMessage(`Added ${newName}`);
-          setTimeout(() => {
-            setInfoMessage(null);
-          }, 3000);
-          setNewName("");
-          setNewNumber("");
-        }).catch((error) => {
-          console.error(error.response.data);
-          setErrorMessage(error.response.data.error);
-          setTimeout(() => {
-            setErrorMessage(null);
-          }, 3000);
-        });
+      : personService
+          .createPerson(personObject)
+          .then((response) => {
+            setPersons(persons.concat(response.data));
+            setInfoMessage(`Added ${newName}`);
+            setTimeout(() => {
+              setInfoMessage(null);
+            }, 3000);
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((error) => {
+            console.error(error.response.data);
+            setErrorMessage(error.response.data.error);
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 3000);
+          });
   };
 
   const deleteContact = (id, name) => {
