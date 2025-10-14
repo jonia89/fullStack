@@ -47,8 +47,33 @@ describe("total likes", () => {
     const result = listHelper.totalLikes(listWithOneBlog);
     assert.strictEqual(result, 5);
   });
-    test("of a bigger list is calculated right", () => {
+  test("of a bigger list is calculated right", () => {
     const result = listHelper.totalLikes(listWithTwoBlogs);
     assert.strictEqual(result, 6);
   });
+});
+
+describe("favourite blog", () => {
+  const listOfBlogs = [
+    {
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Go To Statement Considered Harmful",
+      author: "Edsger W. Dijkstra",
+      url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+      likes: 5,
+      __v: 0,
+    },
+    {
+      _id: "5a422aa71b54a676234d17f9",
+      title: "Test blog",
+      author: "J.S. Tester",
+      url: "http://testi.html",
+      likes: 1,
+      __v: 0,
+    },
+  ];
+  test("the one with most likes", () => {
+    const result = listHelper.favouriteBlog(listOfBlogs);
+    assert.deepStrictEqual(result, listOfBlogs[0]);
+  })
 });
