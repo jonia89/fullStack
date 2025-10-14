@@ -75,5 +75,71 @@ describe("favourite blog", () => {
   test("the one with most likes", () => {
     const result = listHelper.favouriteBlog(listOfBlogs);
     assert.deepStrictEqual(result, listOfBlogs[0]);
-  })
+  });
+});
+
+describe("most blogs", () => {
+  const listOfBlogs = [
+    {
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Go To Statement Considered Harmful",
+      author: "Edsger W. Dijkstra",
+      url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+      likes: 5,
+      __v: 0,
+    },
+    {
+      _id: "5a422aa71b54a676234d17f9",
+      title: "Test blog",
+      author: "J.S. Tester",
+      url: "http://testi.html",
+      likes: 1,
+      __v: 0,
+    },
+    {
+      _id: "5a422aa71b54a676234d17f9",
+      title: "Another Test blog",
+      author: "J.S. Tester",
+      url: "http://testi.html",
+      likes: 1,
+      __v: 0,
+    }
+  ];
+  test("the author with most blogs", () => {
+    const result = listHelper.mostBlogs(listOfBlogs);
+    assert.deepStrictEqual(result, { author: "J.S. Tester", blogs: 2 });
+  });
+});
+
+describe("most likes", () => {
+  const listOfBlogs = [
+    {
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Go To Statement Considered Harmful",
+      author: "Edsger W. Dijkstra",
+      url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+      likes: 5,
+      __v: 0,
+    },
+    {
+      _id: "5a422aa71b54a676234d17f9",
+      title: "Test blog",
+      author: "J.S. Tester",
+      url: "http://testi.html",
+      likes: 1,
+      __v: 0,
+    },
+    {
+      _id: "5a422aa71b54a676234d17f9",
+      title: "Another Test blog",
+      author: "J.S. Tester",
+      url: "http://testi.html",
+      likes: 1,
+      __v: 0,
+    }
+  ];
+  test("the author with most likes", () => {
+    const result = listHelper.mostLikes(listOfBlogs);
+    assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", likes: 5 });
+  });
 });
