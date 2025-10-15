@@ -31,7 +31,7 @@ blogsRouter.post("/", async (request, response, next) => {
     });
 
     const newBlog = await blog.save();
-    response.json(newBlog);
+    response.status(201).json(newBlog);
   } catch (error) {
     next(error);
   }
