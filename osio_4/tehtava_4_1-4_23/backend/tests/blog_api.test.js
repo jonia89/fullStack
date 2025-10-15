@@ -82,6 +82,17 @@ test.only('likes default is 0', async () => {
 
     assert.strictEqual(response.body.likes, 0);
 })
+test.only('missing title or url', async () => {
+const invalidBlog = {
+  author: "J.S. Tester",
+  likes: 0,
+};
+const response = await api
+  .post("/api/blogs")
+  .send(invalidBlog)
+  .expect(400)
+  .expect("Content-Type", /application\/json/);  
+})
 
 after(async () => {
   await mongoose.connection.close();

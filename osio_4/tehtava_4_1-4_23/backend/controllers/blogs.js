@@ -29,7 +29,9 @@ blogsRouter.post("/", async (request, response, next) => {
       url: body.url,
       likes: body.likes || 0,
     });
-
+    if (!blog.title || !blog.url) {
+      return response.status(400).json({ error: "Title and URL are required" });
+    }
     const newBlog = await blog.save();
     response.status(201).json(newBlog);
   } catch (error) {
