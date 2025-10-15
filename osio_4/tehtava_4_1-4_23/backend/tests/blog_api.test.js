@@ -68,6 +68,20 @@ test.only("blog can be added", async () => {
     const titles = response.body.map((blog) => blog.title);
     assert(titles.includes("New Test blog"));
 });
+test.only('likes default is 0', async () => {
+  const blogNotLiked = {
+    title: "Not Liked blog",
+    author: "J.S. Tester",
+    url: "http://testi0.html",
+  };
+  const response = await api
+    .post("/api/blogs")
+    .send(blogNotLiked)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+    assert.strictEqual(response.body.likes, 0);
+})
 
 after(async () => {
   await mongoose.connection.close();
