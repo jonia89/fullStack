@@ -61,14 +61,14 @@ test.only("blog can be added", async () => {
     .send(newBlog)
     .expect(201)
     .expect("Content-Type", /application\/json/);
-  
-    const response = await api.get("/api/blogs");
-    assert.strictEqual(response.body.length, initialBlogs.length + 1);
 
-    const titles = response.body.map((blog) => blog.title);
-    assert(titles.includes("New Test blog"));
+  const response = await api.get("/api/blogs");
+  assert.strictEqual(response.body.length, initialBlogs.length + 1);
+
+  const titles = response.body.map((blog) => blog.title);
+  assert(titles.includes("New Test blog"));
 });
-test.only('likes default is 0', async () => {
+test.only("likes default is 0", async () => {
   const blogNotLiked = {
     title: "Not Liked blog",
     author: "J.S. Tester",
@@ -80,19 +80,42 @@ test.only('likes default is 0', async () => {
     .expect(201)
     .expect("Content-Type", /application\/json/);
 
-    assert.strictEqual(response.body.likes, 0);
-})
-test.only('missing title or url', async () => {
-const invalidBlog = {
-  author: "J.S. Tester",
-  likes: 0,
-};
-const response = await api
-  .post("/api/blogs")
-  .send(invalidBlog)
-  .expect(400)
-  .expect("Content-Type", /application\/json/);  
-})
+  assert.strictEqual(response.body.likes, 0);
+});
+test.only("missing title or url", async () => {
+  const invalidBlog = {
+    author: "J.S. Tester",
+    likes: 0,
+  };
+  const response = await api
+    .post("/api/blogs")
+    .send(invalidBlog)
+    .expect(400)
+    .expect("Content-Type", /application\/json/);
+});
+test.only("blog can be deleted", async () => {
+  const currentBlogs = await api.get("/api/blogs");
+  const blogToDelete = currentBlogs.body[0];
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+  const blogsAfterDelete = await api.get("/api/blogs");
+  assert.strictEqual(blogsAfterDelete.body.length, initialBlogs.length - 1);
+  const titles = blogsAfterDelete.body.map((blog) => blog.title);
+  assert(!titles.includes(blogToDelete.title));
+});
+test.only("likes can increase", async () => {
+  const currentBlogs = await api.get("/api/blogs");
+  const blogToUpdate = currentBlogs.body[0];
+  const updatedBlog = {
+    ...blogToUpdate,
+    likes: blogToUpdate.likes + 5,
+  };
+  const response = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updatedBlog)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+    assert.strictEqual(response.body.likes, blogToUpdate.likes + 5);
+});
 
 after(async () => {
   await mongoose.connection.close();
