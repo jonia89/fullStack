@@ -17,8 +17,8 @@ describe("when there is initially one user at db", () => {
 
     await user.save();
   });
-  test.only("creation succeeds with a fresh username", async () => {
-    const usersAtStart = await helper.usersInDb();
+  test.only("creation succeeds with a valid fresh username and valid password", async () => {
+    const usersAtStart = await User.find({});
     const newUser = {
       username: "mluukkai",
       name: "Matti Luukkainen",
@@ -30,10 +30,36 @@ describe("when there is initially one user at db", () => {
       .expect(201)
       .expect("Content-Type", /application\/json/);
 
-    const usersAtEnd = await helper.usersInDb();
+    const usersAtEnd = await User.find({});
     assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1);
     const usernames = usersAtEnd.map((u) => u.username);
     assert(usernames.includes(newUser.username));
+  });
+  test.only("creation fails with non-unique username", async () => {
+    const newUser = {
+      username: "mluukkai",
+      name: "Matti Luukkainen",
+      password: "salainen",
+    };
+    await api.post("/api/users").send(newUser);
+    const result = await api.post("/api/users").send(newUser).expect(400);
+    assert(result.body.error.includes("unique"));
+  });
+  test.only("creation fails when username is too short", async () => {
+    const newUser = {
+      username: "ml",
+      name: "Matti Luukkainen",
+      password: "salainen",
+    };
+    await api.post("/api/users").send(newUser).expect(400);
+  });
+  test.only("creation fails when password is too short", async () => {
+    const newUser = {
+      username: "mluukkai",
+      name: "Matti Luukkainen",
+      password: "sa",
+    };
+    await api.post("/api/users").send(newUser).expect(400);
   });
 });
 
