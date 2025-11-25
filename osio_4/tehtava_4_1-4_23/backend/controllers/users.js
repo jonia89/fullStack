@@ -23,7 +23,7 @@ usersRouter.post("/", async (request, response, next) => {
 
     response.status(201).json(savedUser);
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
