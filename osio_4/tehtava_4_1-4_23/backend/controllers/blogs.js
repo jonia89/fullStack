@@ -1,9 +1,5 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
-const User = require("../models/user");
-const jwt = require('jsonwebtoken');
-
-
 
 blogsRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", {
@@ -30,12 +26,7 @@ blogsRouter.get("/:id", async (request, response, next) => {
 blogsRouter.post("/", async (request, response, next) => {
   try {
     const body = request.body;
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!decodedToken.id) {
-      return response.status(401).json({error: 'token invalid'})
-    }
-    const user = await User.findById(decodedToken.id)
-
+    const user = request.user;
     // let user;
     // if (body.userId) {
     //   user = await User.findById(body.userId);
@@ -44,9 +35,7 @@ blogsRouter.post("/", async (request, response, next) => {
     // }
 
     if (!user) {
-      return response
-        .status(400)
-        .json({ error: "userId missing or not valid " });
+      return response.status(400).json({ error: "user missing or not valid " });
     }
 
     const blog = new Blog({
@@ -70,19 +59,19 @@ blogsRouter.post("/", async (request, response, next) => {
 
 blogsRouter.delete("/:id", async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!decodedToken.id) {
-      return response.status(401).json({error: 'token invalid'})
+    const user = request.user;
+    if (!user) {
+      return response.status(401).json({ error: "token invalid" });
     }
 
-    const blog = await Blog.findById(request.params.id)
+    const blog = await Blog.findById(request.params.id);
     if (!blog) {
-      return response.status(404).end()
+      return response.status(404).end();
     }
-    if (blog.user.toString() !== decodedToken.id.toString()) {
-      return response.status(401).json({error: 'unauthorized'})
+    if (blog.user.toString() !== user._id.toString()) {
+      return response.status(401).json({ error: "unauthorized" });
     }
-    
+
     await blog.deleteOne();
     response.status(204).end();
   } catch (error) {
