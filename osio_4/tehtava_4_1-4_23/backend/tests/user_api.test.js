@@ -1,5 +1,5 @@
 const assert = require("node:assert");
-const { test, after, beforeEach } = require("node:test");
+const { test, after, beforeEach, describe } = require("node:test");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
@@ -17,7 +17,7 @@ describe("when there is initially one user at db", () => {
 
     await user.save();
   });
-  test.only("creation succeeds with a valid fresh username and valid password", async () => {
+  test("creation succeeds with a valid fresh username and valid password", async () => {
     const usersAtStart = await User.find({});
     const newUser = {
       username: "mluukkai",
@@ -35,7 +35,7 @@ describe("when there is initially one user at db", () => {
     const usernames = usersAtEnd.map((u) => u.username);
     assert(usernames.includes(newUser.username));
   });
-  test.only("creation fails with non-unique username", async () => {
+  test("creation fails with non-unique username", async () => {
     const newUser = {
       username: "mluukkai",
       name: "Matti Luukkainen",
@@ -45,7 +45,7 @@ describe("when there is initially one user at db", () => {
     const result = await api.post("/api/users").send(newUser).expect(400);
     assert(result.body.error.includes("unique"));
   });
-  test.only("creation fails when username is too short", async () => {
+  test("creation fails when username is too short", async () => {
     const newUser = {
       username: "ml",
       name: "Matti Luukkainen",
@@ -53,7 +53,7 @@ describe("when there is initially one user at db", () => {
     };
     await api.post("/api/users").send(newUser).expect(400);
   });
-  test.only("creation fails when password is too short", async () => {
+  test("creation fails when password is too short", async () => {
     const newUser = {
       username: "mluukkai",
       name: "Matti Luukkainen",
