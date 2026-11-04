@@ -1,17 +1,23 @@
-import { useState } from "react";
 import { login } from "../services/login";
+import blogService from "../services/blogs";
 
-const Login = (props) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
-
-  const handleSubmit = async (event) => {
+const Login = ({
+  setUser,
+  username,
+  setUsername,
+  password,
+  setPassword,
+  errorMessage,
+  setErrorMessage,
+}) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     console.log(username, password);
     try {
       const user = await login({ username, password });
-      props.setUser(user);
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      blogService.setToken(user.token);
+      setUser(user);
       setUsername("");
       setPassword("");
     } catch {
@@ -25,7 +31,7 @@ const Login = (props) => {
   return (
     <div>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <div>
           <label>
             Username:
