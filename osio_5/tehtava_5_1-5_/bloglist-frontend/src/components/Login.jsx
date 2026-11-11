@@ -12,7 +12,6 @@ const Login = ({
 }) => {
   const handleLogin = async (event) => {
     event.preventDefault();
-    console.log(username, password);
     try {
       const user = await login({ username, password });
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
@@ -21,7 +20,7 @@ const Login = ({
       setUsername("");
       setPassword("");
     } catch {
-      setErrorMessage("wrong credentials");
+      setErrorMessage("wrong username or password");
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
@@ -30,7 +29,8 @@ const Login = ({
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Login to application</h1>
+       <h1 style={{ color: "red" }}>{errorMessage}</h1>
       <form onSubmit={handleLogin}>
         <div>
           <label>
@@ -54,7 +54,7 @@ const Login = ({
         </div>
         <button type="submit">login</button>
       </form>
-      <h1 style={{ color: "red" }}>{errorMessage}</h1>
+    
     </div>
   );
 };

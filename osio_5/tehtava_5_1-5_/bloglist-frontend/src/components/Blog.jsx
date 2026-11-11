@@ -1,8 +1,8 @@
-const Blog = ({ user, blog, handleLogout }) => (
-  (<div>
-    <p>{user} logged in <button onClick={handleLogout}>logout</button></p>
-    {blog.title} {blog.author}
-  </div>)
+const Blog = ({ blog, handleDeleteBlog }) => (
+  <div>
+    {blog.title} {blog.author}{" "}
+    <button onClick={handleDeleteBlog}>delete</button>
+  </div>
 );
 
 export default Blog;
