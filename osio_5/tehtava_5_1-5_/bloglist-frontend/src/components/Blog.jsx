@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-const Blog = ({ blog, handleDeleteBlog }) => {
+const Blog = ({ blog, handleDeleteBlog, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -29,25 +29,25 @@ const Blog = ({ blog, handleDeleteBlog }) => {
     <div style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={toggleVisibility}>{!visible ? "view" : "hide"}</button>
-      {visible ? (
+      {visible && (
         <div>
           <a href={blog.url} target="_blank">
             {blog.url}
           </a>
           <div>
-            likes: {likes}{" "}
+            likes: {likes}
             <button onClick={() => handleLike(blog.id)}>like</button>
           </div>
           <div>{blog.user.username}</div>
-          <button
-            style={{ backgroundColor: "blue" }}
-            onClick={handleDeleteBlog}
-          >
-            delete
-          </button>
+          {blog.user.username === user.username && (
+            <button
+              style={{ backgroundColor: "blue" }}
+              onClick={handleDeleteBlog}
+            >
+              delete
+            </button>
+          )}
         </div>
-      ) : (
-        ""
       )}
     </div>
   );
