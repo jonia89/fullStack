@@ -19,7 +19,7 @@ const BlogForm = ({ blogs, setBlogs, setErrorMessage }) => {
       setAuthor("");
       setBlogTitle("");
       setBlogUrl("");
-      setVisible(false);
+      toggleVisibility()
       setErrorMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`);
       setTimeout(() => {
         setErrorMessage(null);
