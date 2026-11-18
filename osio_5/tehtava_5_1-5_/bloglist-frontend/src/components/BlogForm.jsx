@@ -34,7 +34,7 @@ const BlogForm = ({ blogs, setBlogs, setErrorMessage }) => {
   };
 
   return !visible ? (
-    <button onClick={() => toggleVisibility(visible)}>create new blog</button>
+    <button onClick={toggleVisibility}>create new blog</button>
   ) : (
     <form onSubmit={handleCreateBlog}>
       <div>
@@ -70,7 +70,7 @@ const BlogForm = ({ blogs, setBlogs, setErrorMessage }) => {
       <div>
         <button type="submit">create</button>
       </div>
-      <button onClick={() => toggleVisibility(visible)}>cancel</button>
+      <button onClick={toggleVisibility}>cancel</button>
     </form>
   );
 };
