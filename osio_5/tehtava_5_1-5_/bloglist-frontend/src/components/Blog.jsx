@@ -29,14 +29,22 @@ const Blog = ({ blog, handleDeleteBlog }) => {
     <div style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={toggleVisibility}>{!visible ? "view" : "hide"}</button>
-      <button onClick={handleDeleteBlog}>delete</button>
       {visible ? (
         <div>
-          <div>{blog.url}</div>
+          <a href={blog.url} target="_blank">
+            {blog.url}
+          </a>
           <div>
-            likes: {likes} <button onClick={() => handleLike(blog.id)}>like</button>
+            likes: {likes}{" "}
+            <button onClick={() => handleLike(blog.id)}>like</button>
           </div>
           <div>{blog.user.username}</div>
+          <button
+            style={{ backgroundColor: "blue" }}
+            onClick={handleDeleteBlog}
+          >
+            delete
+          </button>
         </div>
       ) : (
         ""

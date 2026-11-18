@@ -8,7 +8,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
@@ -27,14 +27,19 @@ const App = () => {
     setUser(null);
   };
 
-  const handleDeleteBlog = async (id) => {
+  const handleDeleteBlog = async (blog) => {
     try {
-      await blogService.destroy(id);
-      setBlogs(blogs.filter((blog) => blog.id !== id));
-      setErrorMessage("blog deleted");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+        await blogService.destroy(blog.id);
+        setBlogs(blogs.filter((b) => b.id !== blog.id));
+        setErrorMessage("blog deleted");
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      }
+      else {
+        console.log("nii")
+      }
     } catch {
       console.error();
     }
@@ -60,13 +65,15 @@ const App = () => {
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
       />
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleDeleteBlog={() => handleDeleteBlog(blog.id)}
-        />
-      ))}
+      {blogs
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleDeleteBlog={() => handleDeleteBlog(blog)}
+          />
+        ))}
     </div>
   );
 };
